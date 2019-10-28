@@ -1,12 +1,12 @@
 {
-  "name": "mptoy-jsx",
+  "name": "mp-jsx",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Forek",
   "license": "ISC",
   "devDependencies": {
     "webpack": "^4.40.2",
