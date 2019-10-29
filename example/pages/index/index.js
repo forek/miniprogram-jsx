@@ -1,5 +1,7 @@
 //index.js
 //获取应用实例
+const moment = require('moment')
+
 const app = getApp()
 
 Page({
@@ -16,6 +18,7 @@ Page({
     })
   },
   onLoad: function () {
+    console.log('moment', moment)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
