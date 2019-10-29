@@ -24,9 +24,33 @@ class TooSimplePlugin {
     try {
       const currPath = path.resolve(this.options.appPath, file)
       fs.accessSync(currPath, fs.constants.R_OK | fs.constants.W_OK)
-      return fs.readFileSync(currPath, { encoding: 'utf8' })
+      // return fs.readFileSync(currPath, { encoding: 'utf8' })
+      return this.readAsUtf8Sync(currPath)
     } catch (error) {
       return null
+    }
+  }
+
+  readAsUtf8Sync (file) {
+    return fs.readFileSync(file, { encoding: 'utf8' })
+  }
+
+  addMpJSXComponetFile (compilation) {
+    try {
+      const jsContent = this.readAsUtf8Sync(path.join(__dirname, './mp-jsx-component/index.js'))
+      const jsonContent = this.readAsUtf8Sync(path.join(__dirname, './mp-jsx-component/index.json'))
+      const wxmlContent = require('./mp-jsx-component/index.wxml.js')()
+
+      compilation.assets['_mp-jsx-component/index.js'] = this.createAsset(jsContent)
+      compilation.assets['_mp-jsx-component/index.json'] = this.createAsset(jsonContent)
+      compilation.assets['_mp-jsx-component/index.wxml'] = this.createAsset(wxmlContent)
+
+      const appJSONContent = JSON.parse(compilation.assets['app.json'].source().toString('utf8'))
+      if (!appJSONContent.usingComponents) appJSONContent.usingComponents = {}
+      appJSONContent.usingComponents['mp-jsx-component'] = '_mp-jsx-component/index'
+      compilation.assets['app.json'] = this.createAsset(JSON.stringify(appJSONContent))
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -62,6 +86,8 @@ class TooSimplePlugin {
         const source = `require('${this.options.vendorsFile}.js');${appJsAssetSource}`
         compilation.assets['app.js'] = this.createAsset(source)
       }
+
+      this.addMpJSXComponetFile(compilation)
     })
   }
 }
