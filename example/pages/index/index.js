@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-const moment = require('moment')
+// const moment = require('moment')
 
 const app = getApp()
 

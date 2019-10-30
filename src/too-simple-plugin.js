@@ -54,8 +54,8 @@ class TooSimplePlugin {
     }
   }
 
-  apply (complier) {
-    complier.hooks.emit.tap('too-simple-plugin', compilation => {
+  apply (compiler) {
+    compiler.hooks.emit.tap('too-simple-plugin', compilation => {
       let hasVendors = false
 
       try {
@@ -64,8 +64,7 @@ class TooSimplePlugin {
             hasVendors = true
           }
 
-          if (jsRegExp.test(filename) && this.getFileNameWithoutExt(filename) in complier.options.entry) {
-            console.log('Is page:', filename)
+          if (jsRegExp.test(filename) && this.getFileNameWithoutExt(filename) in compiler.options.entry) {
             const pathObj = path.parse(filename)
             let source = compilation.assets[filename].source()
             compilation.assets[filename] = this.createAsset(source)

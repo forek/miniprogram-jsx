@@ -9,10 +9,8 @@
   "author": "Forek",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
-    "copy-webpack-plugin": "^5.0.4",
     "babel-eslint": "^10.0.1",
+    "copy-webpack-plugin": "^5.0.4",
     "eslint": "^5.11.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",
@@ -20,6 +18,9 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "supports-color": "^7.1.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9"
   }
 }
