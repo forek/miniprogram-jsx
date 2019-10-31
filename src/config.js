@@ -4,7 +4,7 @@ const TooSimplePlugin = require('./too-simple-plugin')
 
 function getEntry (appPath, pages) {
   return pages.reduce((pre, page) => {
-    pre[page] = `${path.resolve(appPath, page)}?mp`
+    pre[page] = `${path.resolve(appPath, page)}.jsx?mp`
     return pre
   }, {})
 }
@@ -28,7 +28,33 @@ function getConfig (options = {}) {
       filename: '[name].js',
       globalObject: 'wx'
     },
-    mode: 'production',
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['@babel/preset-env', { useBuiltIns: 'usage' }]
+              ],
+              plugins: [
+                '@babel/plugin-transform-runtime',
+                // Stage 0
+                '@babel/plugin-proposal-function-bind',
+                // Stage 2
+                ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+                // Stage 3
+                ['@babel/plugin-proposal-class-properties', { 'loose': false }],
+                ['babel-plugin-common-jsx', { functionName: 'mpjsx.createElement' }]
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    mode: 'none',
     optimization: {
       splitChunks: {
         name: vendorsFile,
@@ -40,7 +66,7 @@ function getConfig (options = {}) {
         { from: pathToAppJSON },
         { from: path.join(appPath, './app.js') },
         { from: path.join(appPath, './app.wxss') },
-        { from: path.join(appPath, './project.config.json') },
+        { from: path.join(appPath, './project.config.json') }
         // { from: path.join(__dirname, './components'), to: 'components/' }
       ]),
       new TooSimplePlugin({
