@@ -1,4 +1,4 @@
-const { TextNode, TagNode, Node, isMpJSXComponent } = require('./node')
+const { FragmentNode, ComponentNode, TextNode, TagNode, Node, isMpJSXComponent } = require('./node')
 
 function createElement (tag, props, children) {
   children = Array.isArray(children) ? children : [children]
@@ -6,7 +6,7 @@ function createElement (tag, props, children) {
 
   if (typeof tag === 'string') return new TagNode({ tag, props, children })
 
-  if (isMpJSXComponent(tag)) return tag // todo
+  if (isMpJSXComponent(tag)) return new ComponentNode({ instance: tag, props, children })
 
   if (typeof tag === 'function') {
     const result = tag(props, children)
@@ -16,6 +16,12 @@ function createElement (tag, props, children) {
   }
 }
 
+function createFragment (children) {
+  children = Array.isArray(children) ? children : [children]
+  return new FragmentNode({ children })
+}
+
 module.exports = {
-  createElement
+  createElement,
+  createFragment
 }

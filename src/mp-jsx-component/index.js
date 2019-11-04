@@ -1,3 +1,4 @@
+/* global Component */
 Component({
   properties: {
     node: Object
@@ -5,10 +6,17 @@ Component({
   data: {},
   lifetimes: {
     created () {
-
+      const { node } = this.props
+      if (node.type === 'component') {
+        // init component
+        // node.instance.setData = this.setData.bind(this)
+      }
     },
     attached () {
-
+      const { node } = this.data
+      if (node.type === 'component') {
+        
+      }
     },
     ready () {
 
@@ -21,12 +29,12 @@ Component({
     }
   },
   methods: {
-    bindMethods(e) {
+    bindMethods (e) {
       const { props } = this.data.node
       switch (e.type) {
         case 'tap':
           if (props && props.bindtap) props.bindtap(e)
-          break;
+          break
       }
     }
   }

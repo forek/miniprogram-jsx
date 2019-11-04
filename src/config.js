@@ -37,10 +37,9 @@ function getConfig (options = {}) {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['@babel/preset-env', { useBuiltIns: 'usage' }]
+                ['@babel/preset-env', { targets: 'cover 99.5% or ie >= 9' }]
               ],
               plugins: [
-                '@babel/plugin-transform-runtime',
                 // Stage 0
                 '@babel/plugin-proposal-function-bind',
                 // Stage 2

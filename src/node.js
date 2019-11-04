@@ -1,5 +1,5 @@
 class Node {
-  constructor ({ type }) {
+  constructor (type) {
     this.type = type
   }
 }
@@ -16,6 +16,22 @@ class TagNode extends Node {
     super('tag')
     this.tag = tag
     this.props = props
+    this.children = children
+  }
+}
+
+class ComponentNode extends Node {
+  constructor ({ instance, props, children }) {
+    super('component')
+    this.instance = instance
+    this.props = props
+    this.children = children
+  }
+}
+
+class FragmentNode extends Node {
+  constructor ({ children }) {
+    super('fragment')
     this.children = children
   }
 }
@@ -40,6 +56,8 @@ module.exports = {
   Node,
   TextNode,
   TagNode,
+  ComponentNode,
+  FragmentNode,
   createMpJSXComponent,
   isMpJSXComponent
 }

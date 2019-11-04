@@ -20,7 +20,7 @@ const MP_JSX_COMPONENT = 'mp-jsx-component'
 const MAP_TAG_LIST = list => list.map(item => `
   <${item.tag} wx:if="{{node.type === '${item.tag}'}}" ${MAP_TAG_ATTRS(item.attrs)} ${MAP_TAG_METHODS(item.methods)}>
     ${RENDER_CHILDREN('node.children')}
-  <${item.tag}/>
+  </${item.tag}>
 `).join('\n')
 
 const MAP_TAG_ATTRS = attrs => attrs.map(item =>
