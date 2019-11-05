@@ -18,7 +18,7 @@ const TAG_LIST = [
 const MP_JSX_COMPONENT = 'mp-jsx-component'
 
 const MAP_TAG_LIST = list => list.map(item => `
-  <${item.tag} wx:if="{{node.type === '${item.tag}'}}" ${MAP_TAG_ATTRS(item.attrs)} ${MAP_TAG_METHODS(item.methods)}>
+  <${item.tag} wx:if="{{node.tag === '${item.tag}'}}" ${MAP_TAG_ATTRS(item.attrs)} ${MAP_TAG_METHODS(item.methods)}>
     ${RENDER_CHILDREN('node.children')}
   </${item.tag}>
 `).join('\n')
@@ -44,8 +44,11 @@ const RENDER_TEMPLATE = () => `
     <block wx:if="{{node.type === 'text'}}">
       ${RENDER_TEXT('node.text')}
     </block>
-    <block wx:if="{{node.type === 'tag'}}">
+    <block wx:elif="{{node.type === 'tag'}}">
       ${MAP_TAG_LIST(TAG_LIST)}
+    </block>
+    <block wx:elif="{{node.type  === 'component'}}">
+      <${MP_JSX_COMPONENT} node="{{root}}" />
     </block>
   </block>
 `

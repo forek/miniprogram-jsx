@@ -21,9 +21,9 @@ class TagNode extends Node {
 }
 
 class ComponentNode extends Node {
-  constructor ({ instance, props, children }) {
+  constructor ({ component, props, children }) {
     super('component')
-    this.instance = instance
+    this.component = component
     this.props = props
     this.children = children
   }

@@ -3,19 +3,24 @@ Component({
   properties: {
     node: Object
   },
-  data: {},
+  data: {
+    root: null
+  },
   lifetimes: {
     created () {
-      const { node } = this.props
-      if (node.type === 'component') {
-        // init component
-        // node.instance.setData = this.setData.bind(this)
-      }
+
     },
     attached () {
       const { node } = this.data
       if (node.type === 'component') {
-        
+        const { component } = node
+        this.instance = Object.create(component)
+        this.instance.data = {}
+        this.instance.setData = (obj) => {
+          Object.assign(this.instance.data, obj)
+          this.setData({ root: this.instance.render() })
+        }
+        this.instance.setData(component.data())
       }
     },
     ready () {

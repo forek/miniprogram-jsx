@@ -6,7 +6,7 @@ function createElement (tag, props, children) {
 
   if (typeof tag === 'string') return new TagNode({ tag, props, children })
 
-  if (isMpJSXComponent(tag)) return new ComponentNode({ instance: tag, props, children })
+  if (tag && typeof tag === 'object' && tag.isMpJSXComponent) return new ComponentNode({ component: tag, props, children })
 
   if (typeof tag === 'function') {
     const result = tag(props, children)
