@@ -3,10 +3,16 @@ const mpjsx = require('../../../src/index')
 const MyComponent = {
   isMpJSXComponent: true,
   data () {
-    return { text: 'hello MyComponent' }
+    return { text: 'hello component' }
+  },
+  attached () {
+    this.handleTap = this.handleTap.bind(this)
+  },
+  handleTap () {
+    this.setData({ text: 'click!' })
   },
   render () {
-    return <view>{this.data.text}</view>
+    return <view bindtap={this.handleTap}>{this.data.text}</view>
   }
 }
 

@@ -1,10 +1,14 @@
 /* global Component */
 Component({
+  options: {
+    pureDataPattern: /^$/ // 指定所有 _ 开头的数据字段为纯数据字段
+  },
   properties: {
     node: Object
   },
   data: {
-    root: null
+    root: null,
+    $instance: null
   },
   lifetimes: {
     created () {
@@ -14,13 +18,18 @@ Component({
       const { node } = this.data
       if (node.type === 'component') {
         const { component } = node
-        this.instance = Object.create(component)
-        this.instance.data = {}
-        this.instance.setData = (obj) => {
-          Object.assign(this.instance.data, obj)
-          this.setData({ root: this.instance.render() })
+        const instance = Object.create(component)
+        instance.data = component.data()
+
+        instance.setData = (obj) => {
+          const { $instance } = this.data
+          Object.assign($instance.data, obj)
+          this.setData({ root: $instance.render() })
         }
-        this.instance.setData(component.data())
+
+        if (instance.attached) instance.attached()
+
+        this.setData({ root: instance.render(), $instance: instance })
       }
     },
     ready () {
@@ -36,9 +45,10 @@ Component({
   methods: {
     bindMethods (e) {
       const { props } = this.data.node
+
       switch (e.type) {
         case 'tap':
-          if (props && props.bindtap) props.bindtap(e)
+          if (props && props.bindtap) props.bindtap()
           break
       }
     }
