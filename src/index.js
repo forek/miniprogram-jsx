@@ -1,8 +1,19 @@
-const { FragmentNode, ComponentNode, TextNode, TagNode, Node, isMpJSXComponent } = require('./node')
+const { FragmentNode, ComponentNode, TextNode, TagNode, Node } = require('./node')
 
 function createElement (tag, props, children) {
   children = Array.isArray(children) ? children : [children]
-  children = children.map(child => typeof child === 'string' ? new TextNode({ text: child }) : child)
+
+  children = children.reduce((result, child) => {
+    // 需要修改babel插件 去掉空字符节点
+    if (typeof child === 'string') {
+      result.push(new TextNode({ text: child }))
+    } else if (Array.isArray(child)) {
+      result.push(new FragmentNode({ children: child }))
+    } else {
+      result.push(child)
+    }
+    return result
+  }, [])
 
   if (typeof tag === 'string') return new TagNode({ tag, props, children })
 

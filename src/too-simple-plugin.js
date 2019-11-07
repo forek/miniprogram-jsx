@@ -37,6 +37,7 @@ class TooSimplePlugin {
 
   addMpJSXComponetFile (compilation) {
     try {
+      if (!compilation.assets['app.json']) return
       const jsContent = this.readAsUtf8Sync(path.join(__dirname, './mp-jsx-component/index.js'))
       const jsonContent = this.readAsUtf8Sync(path.join(__dirname, './mp-jsx-component/index.json'))
       const wxmlContent = require('./mp-jsx-component/index.wxml.js')()
