@@ -71,7 +71,7 @@ class TooSimplePlugin {
             compilation.assets[filename] = this.createAsset(source)
 
             this.options.exts.forEach(ext => {
-              const file = `${pathObj.dir}/${pathObj.name}${ext}`
+              const file = path.join(pathObj.dir, `${pathObj.name}${ext}`)
               const result = this.tryFile(file)
               if (result) compilation.assets[file] = this.createAsset(result)
             })

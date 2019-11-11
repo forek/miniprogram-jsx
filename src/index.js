@@ -5,7 +5,7 @@ function createElement (tag, props, children) {
 
   children = children.reduce((result, child) => {
     // 需要修改babel插件 去掉空字符节点
-    if (typeof child === 'string') {
+    if (typeof child === 'string' || typeof child === 'number' || typeof child === 'boolean') {
       result.push(new TextNode({ text: child }))
     } else if (Array.isArray(child)) {
       result.push(new FragmentNode({ children: child }))

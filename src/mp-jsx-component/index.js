@@ -5,9 +5,14 @@ function lifetimeCaller (lifetime) {
   if ($instance[lifetime]) $instance[lifetime]()
 }
 
+function applyProps (instance, props) {
+  instance.props = Object.assign({}, props)
+}
+
 Component({
   options: {
-    pureDataPattern: /^$/ // 指定所有 _ 开头的数据字段为纯数据字段
+    pureDataPattern: /^$/,
+    styleIsolation: 'apply-shared'
   },
   properties: {
     node: Object
@@ -25,6 +30,8 @@ Component({
       if (node.type === 'component') {
         const { component } = node
         const instance = Object.create(component)
+        applyProps(instance, node.props)
+
         instance.data = instance.data ? instance.data() : {}
 
         instance.setData = (obj) => {
@@ -56,6 +63,14 @@ Component({
     bindMethods (e) {
       const { props } = this.data.node
       if (props && props[`bind${e.type}`]) props[`bind${e.type}`](e)
+    }
+  },
+  observers: {
+    node: function (node) {
+      if (node && node.type === 'component' && node.props && this.data.$instance) {
+        applyProps(this.data.$instance, node.props)
+        this.data.$instance.forceUpdate()
+      }
     }
   }
 })
