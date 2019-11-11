@@ -15,9 +15,14 @@ class TooSimplePlugin {
     }
   }
 
-  getFileNameWithoutExt (filename) {
+  toPosixPath (p) {
+    if (path.sep === '\\') return p.replace(/\\/g, '/')
+    return p
+  }
+
+  getFileNameWithoutExtPosix (filename) {
     const obj = path.parse(filename)
-    return path.join(obj.dir, obj.name)
+    return this.toPosixPath(path.join(obj.dir, obj.name))
   }
 
   tryFile (file) {
@@ -58,20 +63,19 @@ class TooSimplePlugin {
   apply (compiler) {
     compiler.hooks.emit.tap('too-simple-plugin', compilation => {
       let hasVendors = false
-
       try {
         for (let filename in compilation.assets) {
-          if (this.getFileNameWithoutExt(filename) === this.options.vendorsFile) {
+          if (this.getFileNameWithoutExtPosix(filename) === this.options.vendorsFile) {
             hasVendors = true
           }
 
-          if (jsRegExp.test(filename) && this.getFileNameWithoutExt(filename) in compiler.options.entry) {
+          if (jsRegExp.test(filename) && this.getFileNameWithoutExtPosix(filename) in compiler.options.entry) {
             const pathObj = path.parse(filename)
             let source = compilation.assets[filename].source()
             compilation.assets[filename] = this.createAsset(source)
 
             this.options.exts.forEach(ext => {
-              const file = path.join(pathObj.dir, `${pathObj.name}${ext}`)
+              const file = this.toPosixPath(path.join(pathObj.dir, `${pathObj.name}${ext}`))
               const result = this.tryFile(file)
               if (result) compilation.assets[file] = this.createAsset(result)
             })
