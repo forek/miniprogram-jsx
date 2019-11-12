@@ -1,19 +1,14 @@
-const { FragmentNode, ComponentNode, TextNode, TagNode, Node } = require('./node')
+const { FragmentNode, ComponentNode, TextNode, TagNode, Node, EmptyNode } = require('./node')
 
 function createElement (tag, props, children) {
   children = Array.isArray(children) ? children : [children]
 
-  children = children.reduce((result, child) => {
-    // 需要修改babel插件 去掉空字符节点
-    if (typeof child === 'string' || typeof child === 'number' || typeof child === 'boolean') {
-      result.push(new TextNode({ text: child }))
-    } else if (Array.isArray(child)) {
-      result.push(new FragmentNode({ children: child }))
-    } else {
-      result.push(child)
-    }
-    return result
-  }, [])
+  children = children.map(child => {
+    if (!child) return new EmptyNode()
+    if (Array.isArray(child)) return new FragmentNode({ children: child })
+    if (child instanceof Node) return child
+    return new TextNode({ text: String(child) })
+  })
 
   if (typeof tag === 'string') return new TagNode({ tag, props, children })
 

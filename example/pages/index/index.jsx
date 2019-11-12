@@ -53,11 +53,10 @@ const MyComponent = {
 const TodoList = {
   isMpJSXComponent: true,
   render () {
-    console.log(this.props)
     return (
       <view>
         {this.props.items.map(item => (
-          <view class='todo-item' key={item.id}> * {item.text}</view>
+          <view class='todo-item' key={item.id} bindtap={this.props.onRemoveItem.bind(null, item)}> * {item.text}</view>
         ))}
       </view>
     )
@@ -68,10 +67,6 @@ const Todo = {
   isMpJSXComponent: true,
   data () {
     return { items: [], text: '' }
-  },
-  attached () {
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   },
   handleChange (e) {
     const { value } = e.detail
@@ -88,11 +83,14 @@ const Todo = {
       text: ''
     })
   },
+  handleRemove (item, e) {
+    this.setData({ items: this.data.items.filter(v => v.id !== item.id) })
+  },
   render () {
     return (
       <view class='main'>
         <view>TODO</view>
-        <TodoList items={this.data.items} />
+        <TodoList items={this.data.items} onRemoveItem={this.handleRemove} />
         <input type='text' value={this.data.text} bindinput={this.handleChange} />
         <button bindtap={this.handleSubmit}>
           Add #{this.data.items.length + 1}
@@ -102,14 +100,18 @@ const Todo = {
   }
 }
 
-Page({
+function MpJSXPage (opts) {
+  Page(opts)
+}
+
+MpJSXPage({
   data: {
-    root: {}
+    root: null
   },
   onLoad () {
     this.setData({ root: this.render() })
   },
   render () {
-    return <view><Todo /></view>
+    return <Todo />
   }
 })

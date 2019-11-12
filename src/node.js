@@ -36,20 +36,10 @@ class FragmentNode extends Node {
   }
 }
 
-class MpJSXComponent {
-  constructor (opts) {
-    this.isMpJSXComponent = true
-    this.opts = opts
-    this.render = opts.render
+class EmptyNode extends Node {
+  constructor () {
+    super('empty')
   }
-}
-
-function createMpJSXComponent (fn) {
-  return new MpJSXComponent(fn)
-}
-
-function isMpJSXComponent (obj) {
-  return obj instanceof MpJSXComponent
 }
 
 module.exports = {
@@ -58,6 +48,5 @@ module.exports = {
   TagNode,
   ComponentNode,
   FragmentNode,
-  createMpJSXComponent,
-  isMpJSXComponent
+  EmptyNode
 }

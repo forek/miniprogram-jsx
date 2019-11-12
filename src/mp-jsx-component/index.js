@@ -34,6 +34,12 @@ Component({
 
         instance.data = instance.data ? instance.data() : {}
 
+        for (const key in instance) {
+          if (key in component && typeof instance[key] === 'function') {
+            instance[key] = instance[key].bind(instance)
+          }
+        }
+
         instance.setData = (obj) => {
           const { $instance } = this.data
           Object.assign($instance.data, obj)
@@ -67,7 +73,7 @@ Component({
   },
   observers: {
     node: function (node) {
-      if (node && node.type === 'component' && node.props && this.data.$instance) {
+      if (node && node.type === 'component' && this.data.$instance && node.props) {
         applyProps(this.data.$instance, node.props)
         this.data.$instance.forceUpdate()
       }
