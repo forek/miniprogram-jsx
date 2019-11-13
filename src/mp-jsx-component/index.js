@@ -15,7 +15,8 @@ Component({
     styleIsolation: 'apply-shared'
   },
   properties: {
-    node: Object
+    node: Object,
+    applyPageLifetimes: Object
   },
   data: {
     root: null,
@@ -26,7 +27,7 @@ Component({
 
     },
     attached () {
-      const { node } = this.data
+      const { node, applyPageLifetimes } = this.data
       if (node.type === 'component') {
         const { component } = node
         const instance = Object.create(component)
@@ -48,6 +49,11 @@ Component({
 
         instance.forceUpdate = () => {
           this.setData({ root: this.data.$instance.render() })
+        }
+
+        if (applyPageLifetimes) {
+          applyPageLifetimes.apply(instance)
+          if (instance.onLoad) instance.onLoad(instance.query)
         }
 
         if (instance.attached) instance.attached()

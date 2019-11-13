@@ -1,1 +1,1 @@
-  <mp-jsx-component wx:if="{{root}}" node="{{root}}" />
+  <mp-jsx-component wx:if="{{root}}" node="{{root}}" applyPageLifetimes="{{applyPageLifetimes}}" />

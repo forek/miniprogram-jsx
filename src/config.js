@@ -40,13 +40,28 @@ function getConfig (options = {}) {
                 ['@babel/preset-env', { targets: 'cover 99.5% or ie >= 9' }]
               ],
               plugins: [
+                ['@babel/plugin-transform-runtime', { helpers: false }],
                 // Stage 0
                 '@babel/plugin-proposal-function-bind',
                 // Stage 2
-                ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+                ['@babel/plugin-proposal-decorators', { legacy: true }],
                 // Stage 3
-                ['@babel/plugin-proposal-class-properties', { 'loose': false }],
+                ['@babel/plugin-proposal-class-properties', { loose: false }],
                 ['babel-plugin-common-jsx', { functionName: 'mpjsx.createElement' }]
+              ]
+            }
+          }]
+        },
+        {
+          test: /regenerator-runtime\/runtime\.js$/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['@babel/preset-env', { targets: 'cover 99.5% or ie >= 9' }]
+              ],
+              plugins: [
+                ['babel-plugin-global-assignment', { globalObject: 'wx' }]
               ]
             }
           }]

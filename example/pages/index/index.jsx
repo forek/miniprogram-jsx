@@ -68,6 +68,9 @@ const Todo = {
   data () {
     return { items: [], text: '' }
   },
+  onLoad (query) {
+    console.log(query)
+  },
   handleChange (e) {
     const { value } = e.detail
     this.setData({ text: value })
@@ -100,18 +103,40 @@ const Todo = {
   }
 }
 
-function MpJSXPage (opts) {
-  Page(opts)
+const pageLifetimes = ['onLoad', 'onShow', 'onReady', 'onHide', 'onUnload', 'onPullDownRefresh', 'onReachBottom', 'onShareAppMessage', 'onPageScroll', 'onResize', 'onTabItemTap']
+
+function MpJSXPage (Component) {
+  Page({
+    data: {
+      root: null,
+      applyPageLifetimes: null
+    },
+    onLoad (query) {
+      this.ready = new Promise(resolve => {
+        this.setData({
+          root: this.render(),
+          applyPageLifetimes: {
+            apply: function (instance) {
+              console.log('instance', instance)
+              instance.query = query
+              pageLifetimes.forEach(key => {
+                if (instance[key]) instance[key] = instance[key].bind(instance)
+                this.instance = instance
+                resolve()
+              })
+            }
+          }
+        })
+      })
+    },
+    async onShow () {
+      await this.ready()
+      console.log('onShow', this.instance)
+    },
+    render () {
+      return <Component />
+    }
+  })
 }
 
-MpJSXPage({
-  data: {
-    root: null
-  },
-  onLoad () {
-    this.setData({ root: this.render() })
-  },
-  render () {
-    return <Todo />
-  }
-})
+MpJSXPage(Todo)
