@@ -29,7 +29,6 @@ class TooSimplePlugin {
     try {
       const currPath = path.resolve(this.options.appPath, file)
       fs.accessSync(currPath, fs.constants.R_OK | fs.constants.W_OK)
-      // return fs.readFileSync(currPath, { encoding: 'utf8' })
       return this.readAsUtf8Sync(currPath)
     } catch (error) {
       return null
@@ -74,10 +73,15 @@ class TooSimplePlugin {
             let source = compilation.assets[filename].source()
             compilation.assets[filename] = this.createAsset(source)
 
-            this.options.exts.forEach(ext => {
+            this.options.exts.forEach(({ name: ext, defaultContent }) => {
               const file = this.toPosixPath(path.join(pathObj.dir, `${pathObj.name}${ext}`))
               const result = this.tryFile(file)
-              if (result) compilation.assets[file] = this.createAsset(result)
+
+              if (result) {
+                compilation.assets[file] = this.createAsset(result)
+              } else if (defaultContent) {
+                compilation.assets[file] = this.createAsset(defaultContent)
+              }
             })
           }
         }

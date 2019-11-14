@@ -26,6 +26,8 @@
     "babel-plugin-global-assignment": "^1.0.0",
     "copy-webpack-plugin": "^5.0.5",
     "core-js": "^3.4.0",
+    "file-loader": "^4.2.0",
+    "less-loader": "^5.0.0",
     "supports-color": "^7.1.0",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.10"

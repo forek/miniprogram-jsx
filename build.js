@@ -15,8 +15,8 @@ module.exports = function (options = {}) {
   const compiler = webpack(getConfig(options))
   new webpack.ProgressPlugin({ entries: true }).apply(compiler)
 
-  compiler.watch({}, compilerCallback)
-  // compiler.run(compilerCallback)
+  // compiler.watch({}, compilerCallback)
+  compiler.run(compilerCallback)
 }
 
 module.exports()

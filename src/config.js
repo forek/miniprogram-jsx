@@ -1,10 +1,11 @@
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TooSimplePlugin = require('./too-simple-plugin')
+const EXTRA_LOADER = path.join(__dirname, './extra-loader')
 
-function getEntry (appPath, pages) {
+function getEntry(appPath, pages) {
   return pages.reduce((pre, page) => {
-    pre[page] = `${path.resolve(appPath, page)}.jsx?mp`
+    pre[page] = `${path.resolve(appPath, page)}.jsx?mptype=page`
     return pre
   }, {})
 }
@@ -15,7 +16,7 @@ const defaultOptions = {
   outputPath: path.join(process.cwd(), './dist')
 }
 
-function getConfig (options = {}) {
+function getConfig(options = {}) {
   let { vendorsFile, pathToAppJSON, outputPath } = Object.assign(defaultOptions, options)
   pathToAppJSON = path.isAbsolute(pathToAppJSON) ? pathToAppJSON : path.join(process.cwd(), pathToAppJSON)
   const appJSON = require(pathToAppJSON)
@@ -33,27 +34,35 @@ function getConfig (options = {}) {
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: [{
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['@babel/preset-env', { targets: 'cover 99.5% or ie >= 9' }]
-              ],
-              plugins: [
-                ['@babel/plugin-transform-runtime', { helpers: false }],
-                // Stage 0
-                '@babel/plugin-proposal-function-bind',
-                // Stage 2
-                ['@babel/plugin-proposal-decorators', { legacy: true }],
-                // Stage 3
-                ['@babel/plugin-proposal-class-properties', { loose: false }],
-                ['babel-plugin-common-jsx', { functionName: 'mpjsx.createElement' }]
-              ]
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  ['@babel/preset-env', { targets: 'cover 99.5% or ie >= 9' }]
+                ],
+                plugins: [
+                  ['@babel/plugin-transform-runtime', { helpers: false }],
+                  // Stage 0
+                  '@babel/plugin-proposal-function-bind',
+                  // Stage 2
+                  ['@babel/plugin-proposal-decorators', { legacy: true }],
+                  // Stage 3
+                  ['@babel/plugin-proposal-class-properties', { loose: false }],
+                  ['babel-plugin-common-jsx', { functionName: 'mpjsx.createElement' }]
+                ]
+              }
+            },
+            {
+              loader: EXTRA_LOADER,
+              options: {
+                exts: ['.less', '.css', '.wxss']
+              }
             }
-          }]
+          ]
         },
         {
-          test: /regenerator-runtime\/runtime\.js$/,
+          test: /regenerator-runtime(\/|\\)runtime\.js$/,
           use: [{
             loader: 'babel-loader',
             options: {
@@ -65,6 +74,17 @@ function getConfig (options = {}) {
               ]
             }
           }]
+        },
+        {
+          test: /\.wxss$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]'
+              }
+            }
+          ]
         }
       ]
     },
@@ -85,7 +105,13 @@ function getConfig (options = {}) {
       new TooSimplePlugin({
         appPath,
         vendorsFile,
-        exts: ['.json', '.wxml', '.wxss']
+        exts: [{
+          name: '.json',
+          defaultContent: '{}'
+        }, {
+          name: '.wxml',
+          defaultContent: '<mp-jsx-component wx:if="{{root}}" node="{{root}}" applyPageLifetimes="{{applyPageLifetimes}}" />'
+        }]
       })
     ]
   }

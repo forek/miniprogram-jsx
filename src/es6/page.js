@@ -13,7 +13,7 @@ function MpJSXPage (Component) {
         this.setData({
           root: this.render(),
           applyPageLifetimes: {
-            apply: (instance) => {
+            apply: instance => {
               instance.query = query
               pageLifetimes.forEach(key => {
                 if (instance[key]) instance[key] = instance[key].bind(instance)
@@ -29,12 +29,14 @@ function MpJSXPage (Component) {
       return <Component />
     }
   }
-  pageLifetimes.slice(1).forEach(key => {
+
+  for (let i = 1; i < pageLifetimes.length; i++) {
+    const key = pageLifetimes[i]
     pageObj[key] = async function () {
       await this.ready
       if (typeof this.instance[key] === 'function') this.instance[key].apply(null, arguments)
     }
-  })
+  }
 
   Page(pageObj)
 }
