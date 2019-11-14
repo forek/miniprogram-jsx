@@ -1,6 +1,6 @@
-const { FragmentNode, ComponentNode, TextNode, TagNode, Node, EmptyNode } = require('./node')
+import { FragmentNode, ComponentNode, TextNode, TagNode, Node, EmptyNode } from './node'
 
-function createElement (tag, props, children) {
+export function createElement (tag, props, children) {
   children = Array.isArray(children) ? children : [children]
 
   children = children.map(child => {
@@ -22,12 +22,7 @@ function createElement (tag, props, children) {
   }
 }
 
-function createFragment (children) {
+export function createFragment (children) {
   children = Array.isArray(children) ? children : [children]
   return new FragmentNode({ children })
-}
-
-module.exports = {
-  createElement,
-  createFragment
 }

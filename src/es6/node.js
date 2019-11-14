@@ -1,17 +1,17 @@
-class Node {
+export class Node {
   constructor (type) {
     this.type = type
   }
 }
 
-class TextNode extends Node {
+export class TextNode extends Node {
   constructor ({ text }) {
     super('text')
     this.text = text
   }
 }
 
-class TagNode extends Node {
+export class TagNode extends Node {
   constructor ({ tag, props, children }) {
     super('tag')
     this.tag = tag
@@ -20,7 +20,7 @@ class TagNode extends Node {
   }
 }
 
-class ComponentNode extends Node {
+export class ComponentNode extends Node {
   constructor ({ component, props, children }) {
     super('component')
     this.component = component
@@ -29,24 +29,15 @@ class ComponentNode extends Node {
   }
 }
 
-class FragmentNode extends Node {
+export class FragmentNode extends Node {
   constructor ({ children }) {
     super('fragment')
     this.children = children
   }
 }
 
-class EmptyNode extends Node {
+export class EmptyNode extends Node {
   constructor () {
     super('empty')
   }
-}
-
-module.exports = {
-  Node,
-  TextNode,
-  TagNode,
-  ComponentNode,
-  FragmentNode,
-  EmptyNode
 }

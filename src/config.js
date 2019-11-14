@@ -81,7 +81,6 @@ function getConfig (options = {}) {
         { from: path.join(appPath, './app.js') },
         { from: path.join(appPath, './app.wxss') },
         { from: path.join(appPath, './project.config.json') }
-        // { from: path.join(__dirname, './components'), to: 'components/' }
       ]),
       new TooSimplePlugin({
         appPath,

@@ -85,7 +85,7 @@ class TooSimplePlugin {
         console.error(error)
       }
 
-      if (hasVendors) {
+      if (hasVendors && compilation.assets['app.js']) {
         const appJsAssetSource = compilation.assets['app.js'].source()
         const source = `require('${this.options.vendorsFile}.js');${appJsAssetSource}`
         compilation.assets['app.js'] = this.createAsset(source)

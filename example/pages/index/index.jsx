@@ -1,4 +1,4 @@
-const mpjsx = require('../../../src/index')
+import mpjsx from '../../../index'
 
 const MyComponentB = {
   isMpJSXComponent: true,
@@ -103,40 +103,4 @@ const Todo = {
   }
 }
 
-const pageLifetimes = ['onLoad', 'onShow', 'onReady', 'onHide', 'onUnload', 'onPullDownRefresh', 'onReachBottom', 'onShareAppMessage', 'onPageScroll', 'onResize', 'onTabItemTap']
-
-function MpJSXPage (Component) {
-  Page({
-    data: {
-      root: null,
-      applyPageLifetimes: null
-    },
-    onLoad (query) {
-      this.ready = new Promise(resolve => {
-        this.setData({
-          root: this.render(),
-          applyPageLifetimes: {
-            apply: function (instance) {
-              console.log('instance', instance)
-              instance.query = query
-              pageLifetimes.forEach(key => {
-                if (instance[key]) instance[key] = instance[key].bind(instance)
-                this.instance = instance
-                resolve()
-              })
-            }
-          }
-        })
-      })
-    },
-    async onShow () {
-      await this.ready()
-      console.log('onShow', this.instance)
-    },
-    render () {
-      return <Component />
-    }
-  })
-}
-
-MpJSXPage(Todo)
+mpjsx.MpJSXPage(Todo)
