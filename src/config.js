@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TooSimplePlugin = require('./too-simple-plugin')
 const EXTRA_LOADER = path.join(__dirname, './extra-loader')
 
-function getEntry(appPath, pages) {
+function getEntry (appPath, pages) {
   return pages.reduce((pre, page) => {
     pre[page] = `${path.resolve(appPath, page)}.jsx?mptype=page`
     return pre
@@ -16,7 +16,7 @@ const defaultOptions = {
   outputPath: path.join(process.cwd(), './dist')
 }
 
-function getConfig(options = {}) {
+function getConfig (options = {}) {
   let { vendorsFile, pathToAppJSON, outputPath } = Object.assign(defaultOptions, options)
   pathToAppJSON = path.isAbsolute(pathToAppJSON) ? pathToAppJSON : path.join(process.cwd(), pathToAppJSON)
   const appJSON = require(pathToAppJSON)
@@ -76,14 +76,26 @@ function getConfig(options = {}) {
           }]
         },
         {
-          test: /\.wxss$/,
+          test: /\.(css|wxss)$/,
           use: [
             {
               loader: 'file-loader',
               options: {
-                name: '[path][name].[ext]'
+                name: '[path][name].wxss'
               }
             }
+          ]
+        },
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].wxss'
+              }
+            },
+            'less-loader'
           ]
         }
       ]

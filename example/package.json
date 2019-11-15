@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "node ../.bin/index.js",
+    "watch": "node ../.bin/index.js -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

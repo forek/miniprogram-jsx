@@ -14,9 +14,9 @@ function compilerCallback (err, stats) {
 module.exports = function (options = {}) {
   const compiler = webpack(getConfig(options))
   new webpack.ProgressPlugin({ entries: true }).apply(compiler)
-
-  // compiler.watch({}, compilerCallback)
-  compiler.run(compilerCallback)
+  if (options.watch) {
+    compiler.watch({}, compilerCallback)
+  } else {
+    compiler.run(compilerCallback)
+  }
 }
-
-module.exports()

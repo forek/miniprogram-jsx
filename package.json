@@ -1,6 +1,6 @@
 {
   "name": "mp-jsx",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,9 @@
   },
   "author": "Forek",
   "license": "ISC",
+  "bin": {
+    "mpjsx": "./.bin/index.js"
+  },
   "dependencies": {
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
@@ -24,9 +27,11 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-common-jsx": "^0.1.8",
     "babel-plugin-global-assignment": "^1.0.0",
+    "commander": "^4.0.1",
     "copy-webpack-plugin": "^5.0.5",
     "core-js": "^3.4.0",
     "file-loader": "^4.2.0",
+    "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "supports-color": "^7.1.0",
     "webpack": "^4.40.2",
