@@ -24,10 +24,31 @@ function getConfig (options = {}) {
 
   return {
     entry: getEntry(appPath, appJSON.pages),
+    context: appPath,
+    node: {
+      setImmediate: false,
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty'
+    },
     output: {
       path: path.isAbsolute(outputPath) ? outputPath : path.join(process.cwd(), outputPath),
       filename: '[name].js',
       globalObject: 'wx'
+    },
+    resolve: {
+      modules: [
+        'node_modules',
+        path.join(__dirname, '../node_modules/')
+      ]
+    },
+    resolveLoader: {
+      modules: [
+        'node_modules',
+        path.join(__dirname, '../node_modules/')
+      ]
     },
     module: {
       rules: [
