@@ -26,7 +26,7 @@ function MpJSXPage (Component) {
       })
     },
     render () {
-      return <Component />
+      return mpjsx.createElement(Component)
     }
   }
 
