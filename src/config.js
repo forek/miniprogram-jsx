@@ -54,7 +54,12 @@ function getConfig (options = {}) {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
+          include: {
+            or: [
+              { exclude: /node_modules/ },
+              { include: /miniprogram-jsx\/src\/es6/ }
+            ]
+          },
           use: [
             {
               loader: 'babel-loader',
