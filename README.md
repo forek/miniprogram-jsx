@@ -1,8 +1,8 @@
-# mp-jsx
+# miniprogram-jsx
 使用JSX开发(微信)小程序
 
 ## 简介
-mp-jsx是一款让(微信)小程序支持使用JSX语法开发页面/组件的框架. 它在(微信)小程序原生组件的基础上扩展了小程序的开发方式, 使开发者可以用JSX语法编写完全动态的小程序页面/组件.
+miniprogram-jsx(简称mpjsx)是一款让(微信)小程序支持使用JSX语法开发页面/组件的框架. 它在(微信)小程序原生组件的基础上扩展了小程序的开发方式, 使开发者可以用JSX语法编写完全动态的小程序页面/组件.
 
 ## 特性
 * 完整支持JSX语法特性, 无任何语法用法限制
@@ -12,10 +12,10 @@ mp-jsx是一款让(微信)小程序支持使用JSX语法开发页面/组件的�
 
 ## 快速开始
 ### 0: 小程序项目配置
-mp-jsx目前只支持微信小程序, 固app.json/project.config.json等配置文件编写方式与微信小程序一致. 
+mpjsx目前只支持微信小程序, 固app.json/project.config.json等配置文件编写方式与微信小程序一致. 
 
 ### 1: 目录结构
-mp-jsx项目结构跟(微信)小程序基本一致, 需要在项目根目录提供app.json等配置文件:
+mpjsx项目结构跟(微信)小程序基本一致, 需要在项目根目录提供app.json等配置文件:
 
 ```
 ├── app.json // 小程序配置文件
@@ -31,33 +31,33 @@ mp-jsx项目结构跟(微信)小程序基本一致, 需要在项目根目录提�
 * 页面可以不提供json文件和样式文件, 但必须提供js/jsx文件
 
 ### 2: 安装运行
-本地安装mp-jsx:
+本地安装:
 ```
-npm i mp-jsx
+npm i miniprogram-jsx
 ```
 项目根目录运行打包命令:
 ```
-npx mp-jsx build
+npx mpjsx
 ```
 监听模式打包
 ```
-npx mp-jsx build -w
+npx mpjsx -w
 ```
 
 运行打包构建之后, 会在项目根目录生成`dist`文件夹, 使用微信开发者工具导入该文件夹即可预览开发效果.
 
 ### 3: 开发方式
 #### 自定义组件
-mp-jsx组件以JS对象的形式编写, 必须定义`isMpJSXComponent`属性和`render`属性. 其中`render`属性为方法, 返回JSX对象作为该组件渲染结果.
+mpjsx组件以JS对象的形式编写, 必须定义`isMpJSXComponent`属性和`render`属性. 其中`render`属性为方法, 返回JSX对象作为该组件渲染结果.
 
 ```javascript
 // /pages/index/index.jsx
-import mpjsx from 'mp-jsx' // 项目中使用JSX语法的文件必须添加该引用
+import mpjsx from 'miniprogram-jsx' // 项目中使用JSX语法的文件必须添加该引用
 
 // 自定义组件的变量名必须大写字母开头
 const MyComponet = { 
 
-  isMpJSXComponent: true // 必须为true, 使得该对象被视为mp-jsx组件
+  isMpJSXComponent: true // 必须为true, 使得该对象被视为mpjsx组件
 
   data () { 
     // 创建组件时调用, 返回组件data初始值
@@ -91,7 +91,7 @@ const MyComponet = {
 ### 自定义页面
 开发一个页面的方式跟开发组件类似:
 ```javascript
-import mpjsx from 'mp-jsx'
+import mpjsx from 'miniprogram-jsx'
 
 const MyComponet = {
   isMpJSXComponent: true,
@@ -114,7 +114,7 @@ mpjsx.MpJSXPage(MyComponet)
 目前阶段只支持一小部分原生组件(标签), 并且不支持HTML标签
 * 以下所有标签支持通用属性: `id`, `class`, `style`, `hidden`
 * 以下所有标签支持通用事件: `bindtap`
-* 使用mp-jsx组件时, 大部分原生标签的属性/事件名跟微信小程序一致, 但当属性名使用了 `-` 时, 该属性名必须改成`驼峰式命名` (例如: `hover-stop-propagation` 必须写成 `hoverStopPropagation`)
+* 使用mpjsx组件时, 大部分原生标签的属性/事件名跟微信小程序一致, 但当属性名使用了 `-` 时, 该属性名必须改成`驼峰式命名` (例如: `hover-stop-propagation` 必须写成 `hoverStopPropagation`)
 
 | 标签名     | 属性      | 事件 |备注 |
 | -------- | ----------  | ---- |---- |
@@ -143,7 +143,7 @@ const MyComponet = {
 ```
 
 ### 自定义组件属性
-mp-jsx自定义组件支持父组件传入向子组件任意类型及数量的属性, 子组件通过`this.props`对象获取. 当属性更新时, 组件会重新调用渲染. 组件不需要预先定义属性名和类型, 当有属性传入时可以直接通过`this.props`获取.
+mpjsx自定义组件支持父组件传入向子组件任意类型及数量的属性, 子组件通过`this.props`对象获取. 当属性更新时, 组件会重新调用渲染. 组件不需要预先定义属性名和类型, 当有属性传入时可以直接通过`this.props`获取.
 
 ```javascript
 const MyComponetA = {
