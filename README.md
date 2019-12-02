@@ -10,6 +10,9 @@ miniprogram-jsx(简称mpjsx)是一款让(微信)小程序支持使用JSX语法�
 * 开发方式贴近原生小程序, 易上手
 * 基于webpack的打包工具, 支持引用多种格式文件
 
+## 示例项目
+项目地址: [Todo应用](https://github.com/forek/miniprogram-jsx-todo)
+
 ## 快速开始
 ### 0: 小程序项目配置
 mpjsx目前只支持微信小程序, 固app.json/project.config.json等配置文件编写方式与微信小程序一致. 
